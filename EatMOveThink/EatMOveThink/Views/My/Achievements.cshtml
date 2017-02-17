@@ -1,0 +1,128 @@
+﻿@model DatabaseModelProject.AchievmentPoints
+@{
+    ViewBag.Title = "Achievements";
+}
+<style>
+    h2, strong, b, h3, h5 {
+        text-shadow: 1px 1px 1px #ccc;
+    }
+</style>
+<section class="single-page-title" style="padding: 7% 0 5%;">
+    <div class="container text-center">
+        <h2>Achievements</h2>
+    </div>
+</section>
+<!-- .page-title -->
+
+<section>
+    <div class="container">
+        <div class="card" style="padding:5%;">
+            <div class="card-body">
+                <h2 class="">Month : May 2012</h2>
+                @if(Model.gain_totalPts >= Model.totalPts)
+                {
+                    <h5 class="">Medal Achieved: &nbsp; &nbsp; &nbsp; Gold</h5>
+                    <img src="~/img/gold.jpg" style="width:10px;height:10px;border-radius:50px;" />
+                }
+                else if(Model.gain_totalPts >= Model.totalPts_60)
+                {
+                    <h5 class="">Medal Achieved: &nbsp; &nbsp; &nbsp; Silver</h5>
+                        <img src="~/img/silver.jpg" style="width:20px;height:20px;border-radius:50px;" />
+                }
+                else if(Model.gain_totalPts >= Model.totalPts_30)
+                {
+                    <h5 class="">Medal Achieved: &nbsp; &nbsp; &nbsp; Bronze</h5>
+                        <img src="~/img/bronze.jpg" style="width:20px;height:20px;border-radius:50px;" />
+                }
+                else 
+                {
+                    <h5 class="">
+                        Medal Achieved: &nbsp; &nbsp; &nbsp; None
+                    </h5>
+                }
+            </div>
+            <div class="card-body">
+                <h5 class="no-margin m-b">Overall Progress</h5><br />
+                <div class="col-sm-12" style="margin-bottom:50px;">
+                    <div style="bottom: 10px;left: 23.7%;width: 120px;height:60px;position:absolute;">
+                        <pre style="margin: 0;text-align: center;">@(Model.totalPts_30) points</pre>
+                        <div style="width:2px;height:10px;position:relative;left:49%;background-color:#ccc"></div>
+                    </div>
+                    <div style="bottom: 10px;left: 57.3%;width: 120px;height:60px;position:absolute;">
+                        <pre style="margin: 0;text-align: center;">@(Model.totalPts_60) points</pre>
+                        <div style="width:2px;height:10px;position:relative;left:49%;background-color:#ccc"></div>
+                    </div>
+                    <div style="bottom: 10px;left: 91%;width: 120px;height:60px;position:absolute;">
+                        <pre style="margin: 0;text-align: center;">@(Model.totalPts) points</pre>
+                        <div style="width:2px;height:10px;position:relative;left:49%;background-color:#ccc"></div>
+                    </div>
+                    <div class="progress" style="margin-bottom:0px;">
+                        <div class="progress-bar progress-bar-success" style="width: @(ViewBag.totalP)%;">@Model.gain_totalPts Points</div>
+                    </div>
+                    <div style="left: 27.7%;width:50px;height:60px;position:absolute;">
+                        <div style="width:2px;height:10px;position:relative;left:49%;background-color:#ccc"></div>
+                        @if(Model.gain_totalPts >= Model.totalPts_30)
+                        {
+                            <img src="/img/bronze.jpg" style="width:50px;height:50px;border-radius:50px;">
+                        }
+                        else
+                        {
+                            <img src="/img/bronze.jpg" style="width:50px;height:50px;border-radius:50px;opacity:0.5;">
+                        }
+                    </div>
+                    <div style="left: 61.5%;width:50px;height:60px;position:absolute;">
+                        <div style="width:2px;height:10px;position:relative;left:49%;background-color:#ccc"></div>                        
+                        @if (Model.gain_totalPts >= Model.totalPts_60)
+                        {
+                            <img src="~/img/silver.jpg" style="width:50px;height:50px;border-radius:50px;">
+                        }
+                        else
+                        {
+                            <img src="~/img/silver.jpg" style="width:50px;height:50px;border-radius:50px;opacity:0.5;">
+                        }
+                    </div>
+                    <div style="left: 95%;width:50px;height:60px;position:absolute;">
+                        <div style="width:2px;height:10px;position:relative;left:49%;background-color:#ccc"></div>
+                        @if(Model.gain_totalPts >= Model.totalPts)
+                        {
+                            <img src="~/img/gold.jpg" style="width:50px;height:50px;border-radius:50px;">
+                        }
+                        else
+                        {
+                            <img src="~/img/gold.jpg" style="width:50px;height:50px;border-radius:50px;opacity:0.5;">
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <br /><br />
+                <h5 class="m-b" style="padding-top:8%;">Daily Tasks Progress</h5>
+                <div class="col-sm-12">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info" style="width:@(ViewBag.dailyP)%">@Model.gain_dailyPts</div>
+                    </div>
+                    <div style="left: 91%;width: 120px;height:60px;position:absolute;top: 20px;">
+                        <div style="width:2px;height:10px;position:relative;left:49%;background-color:#ccc"></div>
+                        <pre style="margin: 0;text-align: center;">@Model.dailyPts points</pre>
+                    </div>
+                </div>
+            </div>
+            @if (Model.programPts > 0)
+            {
+                <div class="card-body">
+                    <br /><br />
+                    <h5 class="m-b" style="padding-top:8%;">Programs Progress</h5>
+                    <div class="col-sm-12" style="margin-bottom:8%;">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-info" style="width:@(ViewBag.programP)%">@Model.gain_programPts points</div>
+                        </div>
+                        <div style="left: 91%;width: 120px;height:60px;position:absolute;top: 20px;">
+                            <div style="width:2px;height:10px;position:relative;left:49%;background-color:#ccc"></div>
+                            <pre style="margin: 0;text-align: center;">@Model.programPts points</pre>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

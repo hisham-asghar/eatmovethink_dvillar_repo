@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Challenges";
+}
+
+<section class="single-page-title" style="padding: 12% 0 5%;">
+    <div class="container text-center">
+        <h2>Challenges</h2>
+    </div>
+</section>
+<!-- .page-title -->
+@model List<DatabaseModelProject.SubscribedPrograms>
+<section class="x-services ptb-100 gray-bg">
+
+    <section class="section-title">
+        <div class="container text-center">
+            <h2>
+                Challenges / Programs  &nbsp; &nbsp; &nbsp;
+                @if (Session["admin"] != null)
+                {
+                <span><a href="Challenges?query=add"><i class="fa fa-plus"></i></a></span>               
+                }
+            </h2>
+            <span class="bordered-icon"><i class="fa fa-circle-thin"></i></span>
+        </div>
+    </section>
+
+    <div class="container">
+        @foreach (var p in Model)
+        {
+            <div class="row">
+                <div class="col-md-11">
+                    <div class="thumbnail clearfix">
+                        <a href="#">
+                            @if(p.ImageURL == null || p.ImageURL.Trim() == "")
+                            {
+                                <img class="img-responsive" style="width:220px;height:213px;" src="~/img/image.jpg" alt="Image">
+                            }
+                            else
+                            {
+                                <img class="img-responsive" style="width:220px;height:213px;" src="@p.ImageURL" alt="Image">
+                            }
+                        </a>
+                        <div class="caption" style="padding-bottom:12px;">
+                            <h2>@p.Title</h2>
+                            <p style="max-height:10ch;overflow:hidden;">@p.Text</p>
+                            <div style="margin-top:2%;">
+                                <span class="pull-right" style="zoom:75%;">
+                                    <a class="btn btn-default btn-sm" href="Challenges?pid=@p.ProgramID">
+                                        View Program
+                                    </a>&nbsp;
+                                    @if(p.isSubscribed == false)
+                                    {
+                                        <a class="btn btn-primary btn-sm" href="Challenges?join=@p.ProgramID">
+                                            Join Program
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-success btn-sm" href="#">
+                                            Joined
+                                        </a>
+                                    }
+                                </span>
+                                <b>Points:</b> @p.Points <br />
+                                 
+                                @{
+                                    if (p.Intensity == 1) { <b>Intensity: <i>Beginner</i></b> }
+
+                                    else if (p.Intensity == 2) { <b>Intensity: <i>Intermediate</i></b> }
+
+                                    else if (p.Intensity == 3) { <b>Intensity: <i>Expert</i></b> }
+                                }
+                            </div>
+                            <div></div>
+                            
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <!-- .container -->
+</section>

@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Goals";
+    var ix = 0;
+}
+@model List<DatabaseModelProject.DailySubscribedGoals>
+<section class="single-page-title" style="padding: 12% 0 5%;">
+    <div class="container text-center">
+        <h2>Goals</h2>
+    </div>
+</section>
+<!-- .page-title -->
+
+<section class="contact-form ptb-100">
+    <section class="section-title">
+        <div class="container text-center">
+            <h2>
+                Today's Goals
+            </h2>
+            <span class="bordered-icon"><i class="fa fa-circle-thin"></i></span>
+        </div>
+    </section>
+    <div class="container">
+        @foreach (var g in Model)
+        {
+            <div class="well well-sm col-sm-5 ">
+                <span class="pull-right">
+                    @if (g.isFinished == false)
+                    {
+                        <a href="Goals?sp=@g.SubscribeProgramID&pt=@g.ProgramTaskID" class="">Click Here if Completed</a>
+                    }
+                    else
+                    {
+                        <h5 class="text-success">Completed</h5>
+                    }
+                    <pre class="">@g.Points - Points</pre>
+                </span>
+                <strong>Program: @g.Title - Week @g.WeekID - Day @g.DayID </strong>
+                <div>@g.Text.Replace("\n", "<br>")</div>
+            </div>
+            if(ix % 2 == 0)
+            {
+                <div class="well well-sm col-sm-2 " style="border: 0;background: 0;box-shadow: 0 0 0 0;"></div>
+                ix++;
+            }
+        }
+    </div>
+</section>

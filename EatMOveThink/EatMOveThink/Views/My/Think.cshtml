@@ -1,0 +1,185 @@
+﻿@{
+    ViewBag.Title = "Day - Think Goals";
+}
+@model EatMOveThink.Models.ThinkModels
+<section class="single-page-title" style="padding: 7% 0 5%;">
+    <div class="container text-center">
+        <h2>Progress</h2><br />
+        <h2>
+            <a style="font-size:50%;" href="?day=@ViewBag.PrevDate&goal=@ViewBag.Goal"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            <i style="font-size:50%;">Day <a href="#">@ViewBag.Date</a></i>
+            <a style="font-size:50%;" href="?day=@ViewBag.NextDate&goal=@ViewBag.Goal"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </h2>
+
+    </div>
+</section>
+<!-- .page-title -->
+<section>
+    <div class="container">
+
+    </div>
+</section>
+<section class="contact-form ptb-100">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-sm-10 text-left" id="mainContent">
+                <style type="text/css">
+                    .form-group {
+                        margin-bottom: 5px;
+                    }
+
+                    #daycontrols, .total, .total span {
+                        font-size: 16pt;
+                    }
+
+                    .day_head.label-success,
+                    h2.label-success {
+                        color: #555;
+                        margin-bottom: 20px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        background-color: #ccc;
+                        padding: 7px;
+                    }
+
+                    .label-success.nav-justified {
+                        color: #555;
+                        margin-bottom: 20px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        background-color: #ccc;
+                        padding: 7px;
+                    }
+
+                    .goal_list > li.active {
+                        border-bottom: 1px solid #31aae2;
+                    }
+                </style>
+                <div class="metricPanel">
+                    <div style="margin: 0;border-bottom: 1px solid #999;" class="label-success day_head text-center col-sm-12">
+                        <div class="col-sm-4">
+                            @ViewBag.LongDate
+                        </div>
+                        <div class="col-sm-4" style="text-transform:uppercase">
+                            My Day - @ViewBag.Goal Goals
+                        </div>
+                        <div class="col-sm-4" style="padding:5px;">
+                            <span class="total pull-right">Total &nbsp;<span class="label label-warning" id="totalPoints">@Model.totalPts/30 points</span></span>
+                        </div>
+                    </div>
+                    <ul class="nav nav-justified label-success goal_list">
+                        <li class=@(ViewBag.Goal == "eat" ? "active" : "")>
+                            <a href="?day=@ViewBag.Date&goal=eat">
+                                Eat &nbsp;
+                                <span class="label label-info" id="totalPoints">@Model.eatPts/10 points</span>
+                            </a>
+                        </li>
+                        <li class=@(ViewBag.Goal == "move" ? "active" : "")>
+                            <a href="?day=@ViewBag.Date&goal=move">
+                                Move &nbsp;
+                                <span class="label label-info" id="totalPoints">@Model.movePts/10 points</span>
+                            </a>
+                        </li>
+                        <li class=@(ViewBag.Goal == "think" ? "active" : "")>
+                            <a href="?day=@ViewBag.Date&goal=think">
+                                Think &nbsp;
+                                <span class="label label-info" id="totalPoints">@Model.thinkPts/10 points</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <form role="form" class="form-horizontal" id="myday" method="post">
+                    <input type="hidden" name="day" value="@ViewBag.Date">
+                    <div class="metricPanel">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="text-transform:capitalize" for="">diaphragmatic breathing</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-static">
+                                    @if (Model.breath != null && Model.breath.Finish)
+                                    {
+                                        <input type="checkbox" checked name="breath">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="breath">
+                                    }
+                                    I practiced deep diaphragmatic breathing today 
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="">Meditation</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-static">
+                                    @if (Model.meditate != null && Model.meditate.Finish)
+                                    {
+                                        <input type="checkbox" checked name="meditate">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="meditate">
+                                    }
+                                    Today I meditated for 10 or more minutes
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="">Enjoy</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-static">
+                                    @if (Model.enjoy != null && Model.enjoy.Finish)
+                                    {
+                                        <input type="checkbox" checked name="enjoy">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="enjoy">
+                                    }
+                                    I did something that I enjoy today 
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="">Smile</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-static">
+                                    @if (Model.smile != null && Model.smile.Finish)
+                                    {
+                                        <input type="checkbox" checked name="smile">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="smile">
+                                    }
+                                    I laughed and smiled today 
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="">Affirmation</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-static">
+                                    @if (Model.affirmation != null && Model.affirmation.Finish)
+                                    {
+                                        <input type="checkbox" checked name="affirmation">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="affirmation">
+                                    }
+                                    Today I said positive affirmations to start my day
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <hr>
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-success" name="submit" value="Save">
+                        <input type="button" class="btn" onclick="location.href = '/My/Day'" name="submit" value="Cancel">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

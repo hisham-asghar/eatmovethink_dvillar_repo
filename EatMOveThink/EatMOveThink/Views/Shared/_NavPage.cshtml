@@ -1,0 +1,98 @@
+﻿
+
+<style>
+    body.mce-fullscreen #main_nav{
+        display : none;
+    }
+</style>
+<nav id="main_nav" class="navbar m-menu navbar-default navbar-fixed-top">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo.png" style="width:230px;border-radius:2px;" alt="">
+            </a>
+        </div>
+
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="#navbar-collapse-1">
+
+            <ul class="nav-cta hide hidden-xs">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                        <i class="fa fa-search"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <div class="head-search">
+                                <form role="form">
+                                    <!-- Input Group -->
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Type Something">
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-primary">Search</button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <style>
+                .top_navigate_page > li > a{
+                    text-transform:uppercase;
+                }
+            </style>
+            <ul class="nav navbar-nav navbar-right main-nav top_navigate_page">
+                <li class=@(ViewBag.PageName == "/" ? "active" : "")><a href="/">Home</a></li>
+                <li class=@(ViewBag.PageName == "Eat" ? "active" : "")><a href="/Home/Eat">Eat</a></li>
+                <li class=@(ViewBag.PageName == "Move" ? "active" : "")><a href="/Home/Move">Move</a></li>
+                <li class=@(ViewBag.PageName == "Think" ? "active" : "")><a href="/Home/Think">Think</a></li>
+                <li class=@(ViewBag.PageName == "WhatsNew" ? "active" : "")><a href="/Home/WhatsNew">What's New</a></li>
+                @if (!(ViewBag.signed == null || ViewBag.signed == false))
+                {
+                    <li class=@(ViewBag.PageName == "Goals" ? "active" : "")><a href="/Home/Goals">Daily Goals</a></li>
+                }
+                <li class=@(ViewBag.PageName == "Challenges" ? "active" : "")><a href="/Home/Challenges">CHALLENGES</a></li>
+                @if((ViewBag.signed == null || ViewBag.signed == false))
+                {
+                    <li><a href="/User/Login">Login</a></li>
+                }
+                else
+                {
+                    <li class="dropdown m-menu-fw">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                            Hi @Session["user"]
+                            <span><i class="fa fa-angle-down"></i></span>
+                        </a>
+                        <ul class="dropdown-menu col-md-12" style="background-color: initial;border: 0;box-shadow: 0px 0px 0px;">
+                            <li>
+                                <div class="m-menu-content signed-user-dropdown col-sm-offset-9 col-sm-3" style="background-color:#fff;box-shadow: 0px -2px 6px 1px rgba(51, 51, 51, 0.87);">
+                                    <ul class="">
+                                        <li class=""><a href="/My/Achievements">My Achievements</a></li>
+                                        <li><a href="/My/Day">EAT MOVE THINK goals</a></li>
+                                        <li><a href="/My/Challenges">My programs</a></li>
+                                        <li><a href="/My/BookAnExpert">Book an Expert</a></li>
+                                        <li style="border-top:1px solid #000"><a href="/User/Logout">Sign Out</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+
+        </div>
+        <!-- .navbar-collapse -->
+    </div>
+    <!-- .container -->
+</nav>

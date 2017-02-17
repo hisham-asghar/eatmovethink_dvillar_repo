@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Book An Expert";
+}
+
+<section class="single-page-title" style="padding: 10% 0 5%;">
+    <div class="container text-center">
+        <h2>Book An Expert</h2>
+    </div>
+</section>
+<!-- .page-title -->
+
+<section class="contact-form ptb-100">
+    <div class="container text-center">
+        <div class="row ">
+            <div class="col-sm-8" id="mainContent">
+                <p>Enter your details</p>
+                <form role="form" class="form-horizontal" id="login" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="">Name</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static">
+                                <input name="Name" class="form-control" required="required" type="text" placeholder="Name" value="" autocomplete="on">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="">Surname</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static">
+                                <input name="Surname" class="form-control" required="required" type="text" placeholder="Surname" value="" autocomplete="on">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="">Email</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static">
+                                <input name="Email" class="form-control" required="required" type="email" id="username" placeholder="Email" value="" autocomplete="on">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="">Phone Number</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static">
+                                <input name="phone" class="form-control" required="required" type="number" value="" autocomplete="on">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="">Company Name</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static">
+                                <input name="company" class="form-control" required="required" type="text" placeholder="Company" value="" autocomplete="on">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="">Appointment Time</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static">
+                                <input name="appointment_t" class="form-control" required="required" type="date" autocomplete="on">
+                                <input name="appointment_D" class="form-control" required="required" type="time" autocomplete="on">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="">Practitioner Needed:</label>
+                        <div class="col-sm-9">
+                            <select name="water" class="form-control ">
+                                <option value=""></option>
+                                <option value="General Practitioner">General Practitioner</option>
+                                <option value="Chiropractor">Chiropractor</option>
+                                <option value="Podiatrist">Podiatrist</option>
+                                <option value="Nutritionist">Nutritionist</option>
+                                <option value="Life coach">Life coach</option>
+                                <option value="Psychologist">Psychologist</option>
+                                <option value="Personal trainer">Personal trainer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span class="sr-only">Buttons</span></label>
+                        <div class="col-sm-9">
+                            <input type="submit" class="btn btn-info" name="submit" value="Request">
+                            <a class="btn btn-default hide" href="reset/index.html">Forgot password?</a>
+                            <br>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>

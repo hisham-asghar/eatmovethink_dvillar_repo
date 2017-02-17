@@ -1,0 +1,311 @@
+﻿
+@{
+    ViewBag.Title = "Day - Eat Goals";
+}
+@model EatMOveThink.Models.EatModels
+<section class="single-page-title" style="padding: 7% 0 5%;">
+    <div class="container text-center">
+        <h2>Progress</h2><br />
+        <h2>
+            <a style="font-size:50%;" href="?day=@ViewBag.PrevDate&goal=@ViewBag.Goal"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            <i style="font-size:50%;">Day <a href="#">@ViewBag.Date</a></i>
+            <a style="font-size:50%;" href="?day=@ViewBag.NextDate&goal=@ViewBag.Goal"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </h2>
+    </div>
+</section>
+<!-- .page-title -->
+<section>
+    <div class="container">
+        
+    </div>
+</section>
+<section class="contact-form ptb-100">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-sm-10 text-left" id="mainContent">
+                <style type="text/css">
+                    .form-group {
+                        margin-bottom: 5px;
+                    }
+
+                    #daycontrols, .total, .total span {
+                        font-size: 16pt;
+                    }
+                    
+                    .day_head.label-success,
+                    h2.label-success {
+                        color: #555;
+                        margin-bottom: 20px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        background-color: #ccc;
+                        padding: 7px;
+                    }
+                    .label-success.nav-justified {
+                        color: #555;
+                        margin-bottom: 20px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        background-color: #ccc;
+                        padding: 7px;
+                    }
+                    .goal_list > li.active{
+                        border-bottom: 1px solid #31aae2;
+                    }
+                </style>
+                <div class="metricPanel">
+                    <div style="margin: 0;border-bottom: 1px solid #999;" class="label-success day_head text-center col-sm-12">
+                        <div class="col-sm-4">
+                            @ViewBag.LongDate
+                        </div>
+                        <div class="col-sm-4" style="text-transform:uppercase">  
+                            My Day - @ViewBag.Goal Goals
+                        </div>
+                        <div class="col-sm-4" style="padding:5px;">
+                            <span class="total pull-right">Total &nbsp;<span class="label label-warning" id="totalPoints">@Model.totalPts/30 points</span></span>
+                        </div>
+                    </div>
+                    <ul class="nav nav-justified label-success goal_list">
+                        <li class=@(ViewBag.Goal == "eat" ? "active" : "")>
+                            <a href="?day=@ViewBag.Date&goal=eat">
+                                Eat &nbsp;
+                                <span class="label label-info" id="totalPoints">@Model.eatPts/10 points</span>
+                            </a>
+                        </li>
+                        <li class=@(ViewBag.Goal == "move" ? "active" : "")>
+                            <a href="?day=@ViewBag.Date&goal=move">
+                                Move &nbsp;
+                                <span class="label label-info" id="totalPoints">@Model.movePts/10 points</span>
+                            </a>
+                        </li>
+                        <li class=@(ViewBag.Goal == "think" ? "active" : "")>
+                            <a href="?day=@ViewBag.Date&goal=think">
+                                Think &nbsp;
+                                <span class="label label-info" id="totalPoints">@Model.thinkPts/10 points</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <form role="form" class="form-horizontal" id="myday" method="post">
+                    <input type="hidden" name="day" value="@ViewBag.Date">
+
+                    <div class="metricPanel">
+                        <h2 class="label-success">
+                            How many liters of water did I drink today?
+                            @if (Model.water != null && Model.water.Finish)
+                            {
+                                <span class="text-warning pull-right metricPoints">@Model.water.Points/1 point</span>  
+                            }
+                            else
+                            {
+                                <span class="text-warning pull-right metricPoints">0/1 point</span>   
+                            }
+                        </h2>
+                        <div class="form-group">
+                        <label class="col-sm-2 control-label" style="text-transform:capitalize" for="">Water</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">
+                                @if (Model.water != null && Model.water.Finish)
+                                {
+                                    <input type="checkbox" checked name="water">
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="water">
+                                }
+                                
+                                My water intake today was between 1and 3 litres ?
+                            </p>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="metricPanel">
+                        <h2 class="label-success">
+                            How many servings of veggies did I have today?
+                            @if (Model.veggies != null && Model.veggies.Finish)
+                            {
+                                <span class="text-warning pull-right metricPoints">@Model.veggies.Points/1 point</span>
+                            }
+                            else
+                            {
+                                <span class="text-warning pull-right metricPoints">0/1 point</span>
+                            }
+                        </h2>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" style="text-transform:capitalize" for="">Veggies</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static">
+                                    @if (Model.veggies != null && Model.veggies.Finish)
+                                    {
+                                        <input type="checkbox" checked name="veggies">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="veggies">
+                                    }
+                                    I have 4-7 servings of veggies>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metricPanel">
+                        <h2 class="label-success">
+                            Consumed Processed Food?
+                            @if (Model.processFood != null && Model.processFood.Finish)
+                            {
+                                <span class="text-warning pull-right metricPoints">@Model.processFood.Points/1 point</span>
+                            }
+                            else
+                            {
+                                <span class="text-warning pull-right metricPoints">0/1 point</span>
+                            }
+                        </h2>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="">Processed Food</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static">
+                                    @if (Model.processFood != null && Model.processFood.Finish)
+                                    {
+                                        <input type="checkbox" checked name="processedFood">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="processedFood">
+                                    }
+                                    I did not consume any processed foods.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metricPanel">
+                        <h2 class="label-success">
+                            Cafine Intake?
+                            @if (Model.caffine != null && Model.caffine.Finish)
+                            {
+                                <span class="text-warning pull-right metricPoints">@Model.caffine.Points/1 point</span>
+                            }
+                            else
+                            {
+                                <span class="text-warning pull-right metricPoints">0/1 point</span>
+                            }
+                        </h2>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="">Caffine</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static">
+                                    @if (Model.caffine != null && Model.caffine.Finish)
+                                    {
+                                        <input type="checkbox" checked name="cafineIntake">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="cafineIntake">
+                                    }
+                                    My caffeine intake was one or less a day .
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metricPanel">
+                        <h2 class="label-success">
+                            Nutrition
+                            <span class="text-warning pull-right metricPoints" id="day-nutrition-points">@Model.junk/6 points</span>
+                        </h2>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="">Breakfast</label><div class="col-sm-10">
+                                    <select name="breakfast" class="form-control ">
+                                        <option value="0">I made an OK choice</option>
+                                        <option value="0">I need to improve my choice</option>
+                                        <option value="0">Oops! I missed this meal</option>
+                                        @if (Model.breakfast != null && Model.breakfast.Finish)
+                                        {
+                                            <option selected value="1">Yes! I made a healthy choice</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="1">Yes! I made a healthy choice</option>
+                                        }
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="">Snack</label><div class="col-sm-10">
+                                <select name="snack" class="form-control ">
+                                    <option value="0">I made an OK choice</option>
+                                    <option value="0">I need to improve my choice</option>
+                                    <option value="0">Oops! I missed this meal</option>
+                                    @if (Model.snack != null && Model.snack.Finish)
+                                    {
+                                        <option selected value="1">Yes! I made a healthy choice</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1">Yes! I made a healthy choice</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="">Lunch</label><div class="col-sm-10">
+                                <select name="lunch" class="form-control ">
+                                    <option value="0">I made an OK choice</option>
+                                    <option value="0">I need to improve my choice</option>
+                                    <option value="0">Oops! I missed this meal</option>
+                                    @if (Model.lunch != null && Model.lunch.Finish)
+                                    {
+                                        <option selected value="1">Yes! I made a healthy choice</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1">Yes! I made a healthy choice</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="">Dinner</label><div class="col-sm-10">
+                                <select name="dinner" class="form-control ">
+                                    <option value="0">I made an OK choice</option>
+                                    <option value="0">I need to improve my choice</option>
+                                    <option value="0">Oops! I missed this meal</option>
+                                    @if (Model.dinner != null && Model.dinner.Finish)
+                                    {
+                                        <option selected value="1">Yes! I made a healthy choice</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1">Yes! I made a healthy choice</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="">Alcohol</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="alcohol" id="alcohol">
+                                    <option value="0"></option>
+                                    @if (Model.alcohol != null && Model.alcohol.Finish)
+                                    {
+                                        <option selected value="2">1 standard drink</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="2">1 standard drink</option>
+                                    }
+                                    <option value="0">more than 1 standard drinks</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <hr>
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-success" name="submit" value="Save">
+                        <input type="button" class="btn" onclick="location.href = '/My/Day'" name="submit" value="Cancel">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

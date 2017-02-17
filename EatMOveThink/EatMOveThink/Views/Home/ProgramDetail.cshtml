@@ -1,0 +1,85 @@
+﻿@model List<DatabaseModelProject.ProgramTask>
+@{
+    ViewBag.Title = "Challenges - Program";
+    var week = 1;
+}
+<style>
+    h2,strong,b, h3, h5 {
+        text-shadow: 1px 1px 1px #ccc;
+    }
+</style>
+<section class="single-page-title" style="padding: 7% 0 5%;">
+    <div class="container text-center">
+        <h2>Program</h2>
+    </div>
+</section>
+<!-- .page-title -->
+
+<section class="x-services ptb-100 gray-bg">
+
+    <section class="section-title">
+        <div class="container text-center">
+            <h2>@ViewBag.Program.Title</h2>
+            <span class="bordered-icon"><i class="fa fa-circle-thin"></i></span>
+        </div>
+    </section>
+    <div class="container">
+        <div class="col-sm-8">
+
+            <h3>Program: @ViewBag.Program.Title</h3>
+            <div class="media">
+                <div class="pull-right">
+                    @if (@ViewBag.Program.ImageURL == null || @ViewBag.Program.ImageURL.Trim() == "")
+                    {
+                        <img class="media-object" src="/img/image.jpg" alt="" width="120" height="">
+                    }
+                    else
+                    {
+                        <img class="media-object" src="@ViewBag.Program.ImageURL" alt="" width="120" height="">
+                    }
+                </div>
+                <div class="media-body">
+                    <h5>Points: @ViewBag.Program.Points</h5>
+                    @{
+                        if (ViewBag.Program.Intensity == 1)
+                        { <h5>Intensity: Beginner</h5> }
+
+                        else if (ViewBag.Program.Intensity == 2)
+                        { <h5>Intensity: Intermediate</h5> }
+
+                        else if (ViewBag.Program.Intensity == 3)
+                        { <h5>Intensity: Expert</h5> }
+                    }
+
+                    <h5>Related Document: <a target="_blank" href="/Home/Download?fileId=@ViewBag.Program.ProgramID">Click to Download</a></h5>
+                    <p>@ViewBag.Program.Text</p>
+                </div>
+            </div>
+            <hr style="border:1px solid;" />                                                  
+            @foreach (var t in Model)
+            {
+                if(week < t.WeekID)
+                {
+                    week++;<hr style="border:1px solid;"/>                                                  
+                }
+                <div class="well well-sm">
+                    <span>
+                            @if(t.Points > 1)
+                            {
+                                <pre class="pull-right"> @t.Points Points</pre>
+                            }
+                            else
+                            {
+                                <pre class="pull-right"> @t.Points Point</pre>
+                            }
+                    </span>
+                    <strong class="text-info">Week @t.WeekID - Day @t.DayID</strong>
+                    <div>
+                        @t.Text.Replace("\n", "<br>")
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <!-- .container -->
+</section>

@@ -1,0 +1,45 @@
+﻿
+<style>
+    b, h3, h5 {
+        text-shadow: 1px 1px 1px #ccc;
+    }
+</style>
+<section class="single-page-title" style="padding: 12% 0 5%;background:url(/img/hero-slide-1.jpg) no-repeat bottom;">
+    <div class="container text-center">
+        <h2>@ViewBag.Title</h2>
+    </div>
+</section>
+<!-- .page-title -->
+
+<section class="x-services ptb-100 gray-bg">
+    <section class="section-title">
+        <div class="container text-center">
+            <h2>@ViewBag.Title Programs - Editor</h2>
+            <span class="bordered-icon"><i class="fa fa-circle-thin"></i></span>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="col-sm-12">
+            <form method="post" action="/Home/Editor">
+                <input type="hidden" name="Title" value="@ViewBag.Title" />
+                <textarea name="Content" id="editingData" rows="25">
+                    @Html.Raw(ViewBag.Html)
+                </textarea>
+            </form>
+        </div>
+    </div>
+    <!-- .container -->
+</section>
+
+<script src='//cloud.tinymce.com/stable/tinymce.min.js?apiKey=rynx896c65v9p4mi2vpb4ga9e8rb4tco2l478eueg1wqokii'></script>
+<script>
+    tinymce.init({
+        selector: '#editingData',
+        skin: 'lightgray',
+        toolbar: 'save | newdocument | bold | italic | underline | strikethrough |alignleft | aligncenter | alignright | alignjustify | styleselect | formatselect | fontselect | fontsizeselect | cut | copy | paste | bullist | numlist | outdent | indent | blockquote | undo | redo | removeformat | subscript | superscript | forecolor backcolor',
+        plugins: 'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker'+
+        ' searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking'+
+        ' save table contextmenu directionality emoticons template paste textcolor'
+    });
+</script>
