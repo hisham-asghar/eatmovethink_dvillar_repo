@@ -168,6 +168,8 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AchievmentModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\PractitionerModel.cs" />
+    <Compile Include="Models\SendEmailModel.cs" />
     <Compile Include="Models\TabModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -178,6 +180,7 @@
     <Content Include="css\app.min.css" />
     <Content Include="css\mobile-menu.css" />
     <Content Include="css\style.css" />
+    <Content Include="css\styleMain.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\font-awesome\css\font-awesome.css" />
     <Content Include="fonts\font-awesome\css\font-awesome.min.css" />
@@ -185,13 +188,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="img\2ab1147d-95f2-4c4b-8ab2-70aa66038898.jpg" />
-    <Content Include="img\2f01090b-9a94-437e-98d6-379e5b2fdb2f.jpg" />
-    <Content Include="img\3fe24795-f082-4a3c-937a-1ca538de80a8.jpg" />
-    <Content Include="img\4a32fe19-64ec-4242-9525-3d47a2221b66.jpg" />
-    <Content Include="img\a4d95591-f268-407e-b13c-c4640518cbee.jpg" />
     <Content Include="img\bronze.jpg" />
-    <Content Include="img\c8470a56-0531-486c-abe8-471cc3f5e0b8.jpg" />
     <Content Include="img\eatbanner.jpg" />
     <Content Include="img\gold.jpg" />
     <Content Include="img\google-map-marker.png" />
@@ -208,6 +205,8 @@
     <Content Include="img\index_move.png" />
     <Content Include="img\index_think.png" />
     <Content Include="img\index_whatsnew.png" />
+    <Content Include="img\loginback.jpg" />
+    <Content Include="img\loginback.png" />
     <Content Include="img\logo - Copy.png" />
     <Content Include="img\logo.png" />
     <Content Include="img\movebanner.jpg" />
@@ -216,6 +215,9 @@
     <Content Include="img\preloader.svg" />
     <Content Include="img\shoelace.jpg" />
     <Content Include="img\silver.jpg" />
+    <Content Include="img\thinkbanner.jpg" />
+    <Content Include="img\whatsnewbanner.jpg" />
+    <Content Include="img\womanphone.jpg" />
     <Content Include="js\flexSlider\flexslider.css" />
     <Content Include="js\flexSlider\fonts\flexslider-icon.svg" />
     <Content Include="js\flexSlider\images\bg_play_pause.png" />
@@ -266,6 +268,10 @@
     <Content Include="js\flexSlider\fonts\flexslider-icon.eot" />
     <Content Include="js\flexSlider\fonts\flexslider-icon.ttf" />
     <Content Include="js\flexSlider\fonts\flexslider-icon.woff" />
+    <Content Include="docs\12-weeks-to-marathon.pdf" />
+    <Content Include="docs\2816f9c4-c9a0-4b22-a95f-6ed078159b82.pdf" />
+    <Content Include="docs\5acf3c09-f171-4706-8724-a59c6ef600cd.pdf" />
+    <Content Include="docs\8d040a2a-fea7-4ab7-b34a-d008d7f7a797.pdf" />
     <None Include="Properties\PublishProfiles\EatMoveThink.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -279,7 +285,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -325,10 +333,15 @@
     <Content Include="Views\Home\EditorStaticTabView.cshtml" />
     <Content Include="Views\Home\ProgramDetail.cshtml" />
     <Content Include="Views\Home\AddProgram.cshtml" />
+    <Content Include="Views\User\RequestJoin.cshtml" />
+    <Content Include="Views\My\UsersRequest.cshtml" />
+    <Content Include="Views\My\Users.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\User\ForgetPassword.cshtml" />
+    <Content Include="Views\User\_UserLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="docs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

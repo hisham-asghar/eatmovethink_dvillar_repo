@@ -1,36 +1,36 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    var eat = "Sugar is toxic and research has shown that it plays a significant role in lifestyle related diseases. Many people are aware of the dangers of extra sugar in their diet but what many may not know is that sugar is added to most food products, such as smoked salmon, pasta sauces, bread and more. Learn how to read labels and how to eliminate sugar forever!";
+    var move = "Research has shown that sitting for extended periods of time can cause numerous health issues. And even if you participate in one hour of exercise a day either running or going to the gym, does not make up for the 8 or more hours sitting at a computer. Follow these simple tools to counteract the effects of sitting.";
+    var think = "Well, you may think you are not running away from a lion every day but your body may feel, react and process its environment as such. We are talking about the dreaded S word, STRESS!. We all have it and we cannot avoid it, our fast paced lifestyle, high work demands, our environment are all conducive to high stress levels. However, chronic stress levels can cause serious health issues. Follow these simple steps to deal with every day’s stresses and prevent dis-ease.";
+    var whatsnew = "The WHO has focused for World Health Day is “Depression, let’s talk” There is a rapid rise of mental health problems, where 1 in 5 Australians experiencing some form of mental health concerns. Talking openly about this can allow the sigma of mental health to disappear and for suffers to get help they need.";
 }
-
+<style>
+    nav{
+        background-color:#71b083 !important
+    }
+</style>
 <div id="x-corp-carousel" class="carousel slide hero-slide hidden-xs" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
         <li data-target="#x-corp-carousel" data-slide-to="0" class="active"></li>
         <li data-target="#x-corp-carousel" data-slide-to="1"></li>
-        <li data-target="#x-corp-carousel" data-slide-to="2"></li>
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <img src="~/img/highfive.jpg" class="" alt="Hero Slide">
+            <img src="~/img/womanphone.jpg" style="width:100%;" class="" alt="Hero Slide">
 
             <div class="carousel-caption">
-                <h1></h1><p></p>
+                <h1>Welcome to EAT MOVE THINK Wellness Hub</h1><p></p>
             </div>
         </div>
         <div class="item">
-            <img src="~/img/shoelace.jpg" alt="...">
+            <img src="~/img/shoelace.jpg" style="width:100%;" alt="...">
 
             <div class="carousel-caption">
-                <h1></h1><p></p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/img/plankchallenge.jpg" alt="...">
-
-            <div class="carousel-caption">
-                <h1></h1><p></p>
+                <h1>Welcome to EAT MOVE THINK Wellness Hub</h1><p></p>
             </div>
         </div>
     </div>
@@ -60,9 +60,12 @@
         text-transform:uppercase;
         text-shadow:1px 1px 1px #ccc;
     }
-
+    
     .read_more_{
-        position: absolute;bottom: 18%;padding-left: 15px;
+        position: absolute;bottom: 18%;padding-left: 15px;right:6%;
+    }
+    .read_more_m{
+        margin:3%;
     }
     h2{
         text-shadow:1px 1px 1px #ccc;
@@ -86,12 +89,12 @@
                     <div class="caption" style="padding:15px;">
                         <h3 class="caption_head"><a href="#">SUGAR IS EVERYWHERE</a></h3>
 
-                        <p style="max-height:10ch;">
-                            Sugar is toxic and research has shown that it plays a significant role in lifestyle related diseases. Many people are aware of the dangers of extra sugar in their diet but what many may not know is that sugar is added to most food products, such as smoked salmon, pasta sauces, bread and more. Learn how to read labels and how to eliminate sugar forever!
-                            
-                        </p>
+                        <p>
+                            @(eat.Substring(0, 293) + "..")
+                        </p>.
                     </div>
-                    <a href="/Home/Eat" class="read_more_">Read More</a>
+                    <a href="/Home/Eat" class="read_more_ visible-sm visible-md visible-lg">Read More</a>
+                    <a href="/Home/Eat" class="read_more_m visible-xs">Read More</a>
                 </div>
             </div>
             <div class="col-md-6">
@@ -101,12 +104,12 @@
                     <div class="caption" style="padding:15px;">
                         <h3 class="caption_head"><a href="#">IS SITTING REALLT THE NEW SMOKING?</a></h3>
 
-                        <p style="max-height:10ch;">
-                            Research has shown that sitting for extended periods of time can cause numerous health issues. And even if you participate in one hour of exercise a day either running or going to the gym, does not make up for the 8 or more hours sitting at a computer. Follow these simple tools to counteract the effects of sitting.
-                            
-                        </p>
+                        <p>                            
+                        @(move.Substring(0, 252) + "..")
+                        </p>.
                     </div>
-                    <a href="/Home/Move" class="read_more_">Read More</a>
+                    <a href="/Home/Move" class="read_more_ visible-sm visible-md visible-lg">Read More</a>
+                    <a href="/Home/Move" class="read_more_m visible-xs">Read More</a>
                 </div>
             </div>
         </div>
@@ -119,11 +122,12 @@
                     <div class="caption" style="padding:15px;">
                         <h3 class="caption_head"><a href="#">Are you running away from a lion everyday?</a></h3>
 
-                        <p style="max-height:10ch;">
-                            Well, you may think you are not running away from a lion every day but your body may feel, react and process its environment as such. We are talking about the dreaded S word, STRESS!. We all have it and we cannot avoid it, our fast paced lifestyle, high work demands, our environment are all conducive to high stress levels. However, chronic stress levels can cause serious health issues. Follow these simple steps to deal with every day’s stresses and prevent dis-ease.
-                        </p>
+                        <p>
+                            @(think.Substring(0, 266) + "...")
+                        </p>.
                     </div>
-                    <a href="/Home/Think" class="read_more_">Read More</a>
+                    <a href="/Home/Think" class="read_more_ visible-sm visible-md visible-lg">Read More</a>
+                    <a href="/Home/Think" class="read_more_m visible-xs">Read More</a>
                 </div>
             </div>
             <div class="col-md-6">
@@ -133,12 +137,12 @@
                     <div class="caption" style="padding:15px;">
                         <h3 class="caption_head"><a href="#">World Health Day April 7th</a></h3>
 
-                        <p style="max-height:10ch;">
-                            The WHO has focused for World Health Day is “Depression, let’s talk”
-                            There is a rapid rise of mental health problems, where 1 in 5 Australians experiencing some form of mental health concerns. Talking openly about this can allow the sigma of mental health to disappear and for suffers to get help they need.
-                        </p>
+                        <p>
+                            @(whatsnew.Substring(0, 268) + "...")
+                        </p>.
                     </div>
-                    <a href="/Home/WhatsNew" class="read_more_">Read More</a>
+                    <a href="/Home/WhatsNew" class="read_more_ visible-sm visible-md visible-lg">Read More</a>
+                    <a href="/Home/WhatsNew" class="read_more_m visible-xs">Read More</a>
                 </div>
             </div>
         </div>

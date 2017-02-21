@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/User/_UserLayout.cshtml";
+    ViewBag.Title = "Join";
+}
+<div class="left mylogin" style="">
+    <h1>Sign In</h1>
+    @if (ViewBag.error != null && ViewBag.error == "")
+    {
+        <script>
+            alert("Please check your inbox for a confirmation email.");
+        </script>
+    }
+    else
+    {
+        <h5 class="text-danger" style="font-weight:bold;">@ViewBag.error</h5>
+    }
+    <form method="post">
+        <input type="text" name="email" required="" placeholder="E-mail" />
+        <input type="submit" name="signup_submit" style="background-color: #70af82;" value="Sign Up" />
+        <br /><hr />
+        <a style="margin-top:2px;" href="/User/Login">Already Member ? Login</a>
+    </form>
+</div>

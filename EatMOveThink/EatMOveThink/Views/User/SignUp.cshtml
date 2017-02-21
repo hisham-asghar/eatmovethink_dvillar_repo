@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "SignUp";
 }
-
+@model DatabaseModelProject.UserRequest
 <section class="single-page-title" style="padding: 7% 0 5%;">
     <div class="container text-center">
         <h2>Sign Up</h2>
@@ -16,6 +16,8 @@
             <div class="col-md-8 col-md-offset-2">
                 <h5 class="text-danger">@ViewBag.error</h5>
                 <form method="post" >
+                    <input type="hidden" name="req.token" value="@Model.token" />
+                    <input type="hidden" name="req.RequestId" value="@Model.RequestId" />
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group user-name">
@@ -29,7 +31,7 @@
 
                             <div class="form-group user-email">
                                 <label for="emailFive" class="sr-only">Email</label>
-                                <input type="email" name="user.email" class="form-control" required="" id="emailFive" placeholder="Email Address">
+                                <input type="email" name="user.email" disabled="" value="@Model.Email" class="form-control" required="" id="emailFive" placeholder="Email Address">
                             </div>
                             <div class="form-group user-phone">
                                 <label for="websiteOne" class="sr-only">Website</label>
@@ -67,7 +69,7 @@
                                 <div class="col-sm-10" style="padding:0;">
                                     <div class="form-group ">
                                         <label for="websiteOne" class="sr-only">Date of Birth</label>
-                                        <input type="date" name="user.dob" class="form-control" required="" id="websiteOne" placeholder="Mobile Phone" />
+                                        <input type="date" name="user.dob" class="form-control" required="" id="websiteOne" placeholder="Date of Birth" />
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -99,12 +101,12 @@
                         
                         <div class="form-group">
                             <label for="websiteTwo" class="">Public Profile: &nbsp;&nbsp;</label>
-                            <input type="checkbox" name="ispublic" class="" required="" id="websiteTwi" placeholder="Work Phone">
+                            <input type="checkbox" name="ispublic" class="" id="websiteTwi" placeholder="Work Phone">
                             Yes! I'm happy for my imageand comments to be featured on this site
                         </div>
                         <div class="form-group ">
                             <label for="websiteTwo" class="">Newsletter: &nbsp;&nbsp;</label>
-                            <input type="checkbox" name="newsletter" class="" required="" id="websiteTwi" placeholder="Work Phone">
+                            <input type="checkbox" name="newsletter" class="" id="websiteTwi" placeholder="Work Phone">
                             Please send me occasional email newsletters
                         </div>
                     </div>

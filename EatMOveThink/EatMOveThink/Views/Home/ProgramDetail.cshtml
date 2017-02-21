@@ -39,7 +39,8 @@
                     }
                 </div>
                 <div class="media-body">
-                    <h5>Points: @ViewBag.Program.Points</h5>
+                    <h5>Bonus Points: @ViewBag.Program.Points</h5>
+                    <h5>Total Points: @ViewBag.Program.TotalPoints</h5>
                     @{
                         if (ViewBag.Program.Intensity == 1)
                         { <h5>Intensity: Beginner</h5> }
@@ -48,11 +49,16 @@
                         { <h5>Intensity: Intermediate</h5> }
 
                         else if (ViewBag.Program.Intensity == 3)
-                        { <h5>Intensity: Expert</h5> }
+                        { <h5>Intensity: Advanced</h5> }
+                         
+                        else if (ViewBag.Program.Intensity == 4)
+                        { <h5>Intensity: Beginner,Intermediate,Advanced</h5> }
                     }
-
-                    <h5>Related Document: <a target="_blank" href="/Home/Download?fileId=@ViewBag.Program.ProgramID">Click to Download</a></h5>
-                    <p>@ViewBag.Program.Text</p>
+                    @if(ViewBag.Program.pdf != null && ViewBag.Program.pdf.Trim() != "")
+                    {
+                    <h5>Related Document: <a target="_blank" href="/Home/Download?fileId=@ViewBag.Program.ProgramID">Click to Download</a></h5>   
+                    }
+                    <p>@Html.Raw(ViewBag.Program.Text)</p>
                 </div>
             </div>
             <hr style="border:1px solid;" />                                                  
@@ -74,7 +80,7 @@
                             }
                     </span>
                     <strong class="text-info">Week @t.WeekID - Day @t.DayID</strong>
-                    <div>
+                    <div class="detail-text">
                         @t.Text.Replace("\n", "<br>")
                     </div>
                 </div>
@@ -83,3 +89,14 @@
     </div>
     <!-- .container -->
 </section>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("div.detail-text a").each(function () {
+                $(this).attr("target", "_blank");
+            });
+        });
+    </script>
+}
+

@@ -9,12 +9,6 @@ namespace DatabaseModelProject
     [Table("User")]
     public partial class User
     {
-        public User()
-        {
-            SubscribePrograms = new HashSet<SubscribeProgram>();
-            UserDailyTasks = new HashSet<UserDailyTask>();
-        }
-
         public int UserID { get; set; }
 
         [Required]
@@ -22,7 +16,7 @@ namespace DatabaseModelProject
         public string username { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(100)]
         public string email { get; set; }
 
         [Column(TypeName = "date")]
@@ -51,8 +45,6 @@ namespace DatabaseModelProject
         [Required]
         public string info { get; set; }
 
-        public virtual ICollection<SubscribeProgram> SubscribePrograms { get; set; }
-
-        public virtual ICollection<UserDailyTask> UserDailyTasks { get; set; }
+        public bool isActive { get; set; }
     }
 }

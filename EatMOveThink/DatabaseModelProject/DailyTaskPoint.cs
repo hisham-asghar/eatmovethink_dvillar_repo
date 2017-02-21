@@ -8,6 +8,11 @@ namespace DatabaseModelProject
 
     public partial class DailyTaskPoint
     {
+        public DailyTaskPoint()
+        {
+            UserDailyTasks = new HashSet<UserDailyTask>();
+        }
+
         [Key]
         public int TaskID { get; set; }
 
@@ -17,6 +22,6 @@ namespace DatabaseModelProject
 
         public int Points { get; set; }
 
-        public virtual UserDailyTask UserDailyTask { get; set; }
+        public virtual ICollection<UserDailyTask> UserDailyTasks { get; set; }
     }
 }

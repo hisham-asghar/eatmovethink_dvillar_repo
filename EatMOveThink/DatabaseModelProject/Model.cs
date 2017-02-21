@@ -8,10 +8,11 @@ namespace DatabaseModelProject
     public partial class Model : DbContext
     {
         public Model()
-            : base("name=Model")
+            : base("name=DatabaseModelString")
         {
         }
 
+        public virtual DbSet<AddtionalProgram> AddtionalPrograms { get; set; }
         public virtual DbSet<DailyTaskPoint> DailyTaskPoints { get; set; }
         public virtual DbSet<Program> Programs { get; set; }
         public virtual DbSet<ProgramTask> ProgramTasks { get; set; }
@@ -20,6 +21,7 @@ namespace DatabaseModelProject
         public virtual DbSet<SubscribeProgramTask> SubscribeProgramTasks { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserDailyTask> UserDailyTasks { get; set; }
+        public virtual DbSet<UserRequest> UserRequests { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -28,8 +30,9 @@ namespace DatabaseModelProject
                 .IsUnicode(false);
 
             modelBuilder.Entity<DailyTaskPoint>()
-                .HasOptional(e => e.UserDailyTask)
-                .WithRequired(e => e.DailyTaskPoint);
+                .HasMany(e => e.UserDailyTasks)
+                .WithRequired(e => e.DailyTaskPoint)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Program>()
                 .Property(e => e.Title)
@@ -37,6 +40,10 @@ namespace DatabaseModelProject
 
             modelBuilder.Entity<Program>()
                 .Property(e => e.ImageURL)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Program>()
+                .Property(e => e.pdf)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Program>()
@@ -86,15 +93,13 @@ namespace DatabaseModelProject
                 .Property(e => e.info)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.SubscribePrograms)
-                .WithRequired(e => e.User)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<UserRequest>()
+                .Property(e => e.Email)
+                .IsUnicode(false);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.UserDailyTasks)
-                .WithRequired(e => e.User)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<UserRequest>()
+                .Property(e => e.token)
+                .IsUnicode(false);
         }
     }
 }

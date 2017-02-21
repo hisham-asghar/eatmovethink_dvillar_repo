@@ -2,7 +2,12 @@
 @{
     ViewBag.Title = "Challenges";
 }
-
+<style>
+    
+    strong,b, h3, h5 , h2 {
+        text-shadow: 1px 1px 1px #ccc;
+    }
+</style>
 <section class="single-page-title" style="padding: 12% 0 5%;">
     <div class="container text-center">
         <h2>Challenges</h2>
@@ -42,8 +47,14 @@
                             }
                         </a>
                         <div class="caption" style="padding-bottom:12px;">
-                            <h2>@p.Title</h2>
-                            <p style="max-height:10ch;overflow:hidden;">@p.Text</p>
+                            @if(Session["admin"] != null)
+                            {
+                            <span class="pull-right">
+                                <a href="/Home/Challenges?remove=@p.ProgramID"  class="deleteprogram text-danger" style="font-weight:bold;">Delete</a>
+                            </span>   
+                            }
+                            <h5 style="text-transform:uppercase;">@p.Title</h5>
+                            <p style="max-height:10ch;overflow:hidden;" class="program-detail">@Html.Raw(p.Text)</p>
                             <div style="margin-top:2%;">
                                 <span class="pull-right" style="zoom:75%;">
                                     <a class="btn btn-default btn-sm" href="Challenges?pid=@p.ProgramID">
@@ -69,7 +80,10 @@
 
                                     else if (p.Intensity == 2) { <b>Intensity: <i>Intermediate</i></b> }
 
-                                    else if (p.Intensity == 3) { <b>Intensity: <i>Expert</i></b> }
+                                    else if (p.Intensity == 3) { <b>Intensity: <i>Advanced</i></b> }
+                                                                                                 
+                                    else if (p.Intensity == 4)
+                                    { <b>Intensity: <i> Beginner,Intermediate,Advanced</i></b> }
                                 }
                             </div>
                             <div></div>
@@ -83,3 +97,22 @@
     </div>
     <!-- .container -->
 </section>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".program-detail a").each(function () {
+                $(this).attr("target", "_blank");
+            });
+            $("a.deleteprogram").each(function () {
+                $(this).click(function () {
+                    if (confirm('Are you sure you want to delete this program ?')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            });
+        });
+
+    </script>
+}

@@ -3,7 +3,12 @@ using DatabaseModelProject;
 using EatMOveThink.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Net.Configuration;
+using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,7 +19,7 @@ namespace EatMOveThink.Controllers
         public ActionResult Achievements()
         {
             if (Session["user"] == null)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
             
@@ -31,19 +36,169 @@ namespace EatMOveThink.Controllers
             ViewBag.programP = ((double)model.gain_programPts) / model.programPts * 100;
             return View(model);
         }
+        [HttpGet]
         public ActionResult BookAnExpert()
         {
             if (Session["user"] == null)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
 
             return View();
         }
+        [HttpPost]
+        public ActionResult BookAnExpert(PractitionerModel model)
+        {
+            if (Session["user"] == null)
+                return RedirectToAction("Login", "User");
+            else
+                ViewBag.signed = true;
+            
+            String Head = "Practitioner Appointment Request";
+            SendEmailModel modelEMail = new SendEmailModel
+            {
+                Body = "Name: " + model.Name + "<br />" + "Surname: " + model.Surname + "<br />" + "Email: " + model.Email + "<br />" + "Required Appointment: " + model.appointment_t + " - " + model.appointment_D + "<br />" + "Company: " + model.company + "<br />" + "Phone #: " + model.phone + "<br />" + "Practitioner #: " + model.Practitioner + "<br />",
+                Subject = "Practitioner Appointment Request",
+                To = "FRONTDESK@COMPLETECITYHEALTH.COM.AU"
+            };
+            bool res = SendMail(modelEMail);
+            if (res == true)
+                ViewBag.msg = "Your practitioner request has been received. We will contact you as soon as possible.";
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Users()
+        {
+            if (Session["user"] == null)
+                return RedirectToAction("Login", "User");
+            else
+                ViewBag.signed = true;
+
+            if (Session["admin"] == null)
+                return RedirectToAction("Index", "Home");
+            UserDAO dao = new UserDAO();
+            if (Request.QueryString["token"] != null && Request.QueryString["id"] != null && Request.QueryString.Count == 2)
+            {
+                string token = Request.QueryString["token"];
+                int id = Convert.ToInt32(Request.QueryString["id"]);
+                if (token == "activate")
+                {
+                    User req = dao.userStatus(id,1);
+                    if (req != null)
+                    {
+                        SendEmailModel model = new SendEmailModel{
+                            To = req.email,
+                            Body = "<h3>You account has been activated.</h3>",
+                            Subject = "Account Information eatmovethink.com"
+                        };
+                        bool mailRes = SendMail(model);
+                    }
+
+                }
+                else if (token == "deactivate")
+                {
+                    User req = dao.userStatus(id, 0);
+                    if (req != null)
+                    {
+                        SendEmailModel model = new SendEmailModel{
+                            To = req.email,
+                            Body = "<h3>You account has been deactivated.</h3>",
+                            Subject = "Account Information eatmovethink.com"
+                        };
+                        bool mailRes = SendMail(model);
+                    }
+                }
+            }
+
+            List<User> list = dao.getUsers();
+
+            return View(list);
+        }
+
+        [HttpGet]
+        public ActionResult UsersRequest()
+        {
+            if (Session["user"] == null)
+                return RedirectToAction("Login", "User");
+            else
+                ViewBag.signed = true;
+            if (Session["admin"] == null)
+                return RedirectToAction("Index", "Home");
+
+            UserDAO dao = new UserDAO();
+            if(Request.QueryString["token"] != null && Request.QueryString["id"] != null && Request.QueryString.Count == 2)
+            {
+                string token = Request.QueryString["token"];
+                int id = Convert.ToInt32(Request.QueryString["id"]);
+                if (token == "accept")
+                {
+                    UserRequest req = dao.getUserRequest(id);
+                    if(req != null)
+                    {
+                        string link = "http://eatmovethinkhub.com/User/SignUp?Token=" + req.token;
+                        SendEmailModel emailModel = new SendEmailModel();
+                        emailModel.Body = "<a href='" + link + "'>Click to SignUp for Account</a>";
+                        emailModel.To = req.Email;
+                        emailModel.Subject = "Request Accepted for Account on eatmovethink.com";
+                        bool mailRes = SendMail(emailModel);
+                        bool mailSendRes = dao.SentRequest(id);
+                    }
+
+                }
+                else if (token == "reject")
+                {
+                    bool res = dao.deleteUserRequest(id);
+                }
+            }
+
+            List<UserRequest> list = dao.getUserRequests();
+
+            return View(list);
+        }
+
+        public bool SendMail(SendEmailModel model)
+        {
+            var smtpSection = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+            System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
+            mail.From = new System.Net.Mail.MailAddress(smtpSection.From);
+
+            // The important part -- configuring the SMTP client
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Port = smtpSection.Network.Port;   // [1] You can try with 465 also, I always used 587 and got success
+            smtp.EnableSsl = smtpSection.Network.EnableSsl;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network; // [2] Added this
+            smtp.UseDefaultCredentials = smtpSection.Network.DefaultCredentials; // [3] Changed this
+            smtp.Credentials = new NetworkCredential(mail.From.ToString(), smtpSection.Network.Password);  // [4] Added this. Note, first parameter is NOT string.
+            smtp.Host = smtpSection.Network.Host;
+
+            //recipient address
+            mail.To.Add(new MailAddress(model.To));
+
+            //Formatted mail body http://students.org.pk/Classroom/Download?activityId=12  http://eatmovethinkhub.com/
+            mail.IsBodyHtml = true;
+            mail.Subject = model.Subject;
+            mail.Body = model.Body;
+            mail.BodyEncoding = Encoding.UTF8;
+            mail.SubjectEncoding = Encoding.UTF8;
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(model.Body);
+            htmlView.ContentType = new System.Net.Mime.ContentType("text/html");
+            mail.AlternateViews.Add(htmlView);
+            try
+            {
+                smtp.Send(mail);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
         public ActionResult Challenges()
         {
             if (Session["user"] == null)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
 
@@ -60,7 +215,7 @@ namespace EatMOveThink.Controllers
         public ActionResult Day()
         {
             if (Session["user"] == null)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
 
@@ -75,6 +230,7 @@ namespace EatMOveThink.Controllers
 
             ViewBag.PrevDate = date.AddDays(-1).ToString("yyyy-MM-dd");
             ViewBag.Date = date.ToString("yyyy-MM-dd");
+            ViewBag.DisplayDate = date.ToString("dd-MM-yyyy");
             ViewBag.LongDate = date.ToLongDateString();
             ViewBag.NextDate = date.AddDays(1).ToString("yyyy-MM-dd");
 

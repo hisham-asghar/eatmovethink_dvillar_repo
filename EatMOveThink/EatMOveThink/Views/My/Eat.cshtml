@@ -8,7 +8,7 @@
         <h2>Progress</h2><br />
         <h2>
             <a style="font-size:50%;" href="?day=@ViewBag.PrevDate&goal=@ViewBag.Goal"><span class="glyphicon glyphicon-chevron-left"></span></a>
-            <i style="font-size:50%;">Day <a href="#">@ViewBag.Date</a></i>
+            <i style="font-size:50%;">Day <a href="#">@ViewBag.DisplayDate</a></i>
             <a style="font-size:50%;" href="?day=@ViewBag.NextDate&goal=@ViewBag.Goal"><span class="glyphicon glyphicon-chevron-right"></span></a>
         </h2>
     </div>
@@ -180,7 +180,7 @@
                     </div>
                     <div class="metricPanel">
                         <h2 class="label-success">
-                            Cafine Intake?
+                            Caffeine Intake?
                             @if (Model.caffine != null && Model.caffine.Finish)
                             {
                                 <span class="text-warning pull-right metricPoints">@Model.caffine.Points/1 point</span>
@@ -191,7 +191,7 @@
                             }
                         </h2>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label" for="">Caffine</label>
+                            <label class="col-sm-2 control-label" for="">Caffeine</label>
                             <div class="col-sm-10">
                                 <p class="form-control-static">
                                     @if (Model.caffine != null && Model.caffine.Finish)
@@ -287,11 +287,11 @@
                                     <option value="0"></option>
                                     @if (Model.alcohol != null && Model.alcohol.Finish)
                                     {
-                                        <option selected value="2">1 standard drink</option>
+                                        <option selected value="2">0 or 1 standard drink</option>
                                     }
                                     else
                                     {
-                                        <option value="2">1 standard drink</option>
+                                        <option value="2">0 or 1 standard drink</option>
                                     }
                                     <option value="0">more than 1 standard drinks</option>
                                 </select>

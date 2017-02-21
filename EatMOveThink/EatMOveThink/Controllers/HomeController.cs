@@ -15,7 +15,7 @@ namespace EatMOveThink.Controllers
         public ActionResult Index()
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
             ViewBag.PageName = "/";
@@ -25,7 +25,7 @@ namespace EatMOveThink.Controllers
         public ActionResult About()
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
             ViewBag.Message = "Your application description page.";
@@ -36,7 +36,7 @@ namespace EatMOveThink.Controllers
         public ActionResult Contact()
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
             ViewBag.Message = "Your contact page.";
@@ -46,7 +46,7 @@ namespace EatMOveThink.Controllers
         public ActionResult AskExpert()
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
 
@@ -59,7 +59,7 @@ namespace EatMOveThink.Controllers
         public ActionResult Editor(string Title,String Content)
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
             StaticDataDAO dao = new StaticDataDAO();
@@ -70,7 +70,7 @@ namespace EatMOveThink.Controllers
         public ActionResult Eat()
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
 
@@ -92,7 +92,7 @@ namespace EatMOveThink.Controllers
         public ActionResult Move()
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
 
@@ -113,7 +113,7 @@ namespace EatMOveThink.Controllers
         public ActionResult Think()
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
 
@@ -124,7 +124,7 @@ namespace EatMOveThink.Controllers
             ViewBag.Title = Title;
             ViewBag.Message = Title;
             ViewBag.PageName = Title;
-            ViewBag.Image = "/img/hero-slide-1.jpg";
+            ViewBag.Image = "/img/thinkbanner.jpg";
 
             ViewBag.Html = res.Value;
             if (Request.Url.Segments.Length == 4 && Request.Url.Segments[3] == "Editor")
@@ -137,10 +137,9 @@ namespace EatMOveThink.Controllers
         public ActionResult Goals()
         {
             if (Session["user"] == null)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
-
             int uid = 0;
             uid = (int)Session["userId"];
 
@@ -164,7 +163,7 @@ namespace EatMOveThink.Controllers
         public ActionResult WhatsNew()
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
 
@@ -175,7 +174,7 @@ namespace EatMOveThink.Controllers
             ViewBag.Title = Title;
             ViewBag.Message = Title;
             ViewBag.PageName = Title;
-            ViewBag.Image = "/img/hero-slide-1.jpg";
+            ViewBag.Image = "/img/whatsnewbanner.jpg";
 
             ViewBag.Html = res.Value;
             if (Request.Url.Segments.Length == 4 && Request.Url.Segments[3] == "Editor")
@@ -189,18 +188,26 @@ namespace EatMOveThink.Controllers
         public ActionResult Challenges()
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
 
             ViewBag.Message = "Challenges";
             ViewBag.PageName = "Challenges";
-            
+
+            int uid = 0;
+            if (Session["user"] != null)
+            {
+                uid = (int)Session["userId"];
+            }
             ProgramDAO dao = new ProgramDAO();
             if(Request.QueryString.Count == 1 && Request.QueryString["query"] == "add")
             {
                 if(Session["admin"] != null)
-                    return View("AddProgram");
+                {
+                    var list = dao.getAllPrograms();
+                    return View("AddProgram",list);
+                }
             }
             if (Request.QueryString.Count == 1 && Request.QueryString["pid"] != null)
             {
@@ -211,6 +218,23 @@ namespace EatMOveThink.Controllers
                     ViewBag.Program = program;
                     var tlist = dao.getProgramTasks(pid);
                     return View("ProgramDetail", tlist);
+                }
+            }
+            if (Request.QueryString.Count == 1 && Request.QueryString["remove"] != null)
+            {
+                int pid = Convert.ToInt32(Request.QueryString["remove"]);
+                Program res = dao.removeProgram(pid);
+                if(res != null)
+                {
+                    try
+                    {
+                        System.IO.File.Delete(Server.MapPath("/") + res.pdf);
+                        System.IO.File.Delete(Server.MapPath("/") + res.ImageURL);
+                    }
+                    catch (Exception e)
+                    {
+                        int x = 0;
+                    }
                 }
             }
             if (Request.QueryString.Count == 1 && Request.QueryString["join"] != null)
@@ -230,21 +254,17 @@ namespace EatMOveThink.Controllers
                         return RedirectToAction("Challenges", "Home");
                 }
             }
-            int uid = 0;
-            if(Session["user"] != null)
-            {
-                uid = (int)Session["userId"];
-            }
-            var list = dao.getPrograms(uid);
+            var listSub = dao.getPrograms(uid);
 
-            return View(list);
+            return View(listSub);
         }
         
         [HttpPost]
-        public ActionResult Challenges(HttpPostedFileBase image, HttpPostedFileBase pdfDocument ,List<ProgramTask> tasks, Program program)
+        [ValidateInput(false)]
+        public ActionResult Challenges(HttpPostedFileBase image, HttpPostedFileBase pdfDocument, List<ProgramTask> tasks, Program program, int[] programIds)
         {
             if (Session["user"] == null)
-                ViewBag.signed = false;
+                return RedirectToAction("Login", "User");
             else
                 ViewBag.signed = true;
             string img_url = SaveImage(image);
@@ -254,9 +274,22 @@ namespace EatMOveThink.Controllers
             {
                 program.Intensity = Convert.ToInt32(Request.Form["program.Intensity"]);
             }
+            List<AddtionalProgram> extraP = new List<AddtionalProgram>();
+            if(programIds != null)
+            {
+
+                foreach (var i in programIds)
+                {
+                    AddtionalProgram a = new AddtionalProgram
+                    {
+                        ReferencedProgram = i
+                    };
+                    extraP.Add(a);
+                }
+            }
             program.ImageURL = img_url;
             program.pdf = pdf_url;
-            bool res = dao.saveProgram(tasks, program);
+            bool res = dao.saveProgram(tasks, program,extraP);
             int uid = 0;
             if (Session["user"] != null)
             {

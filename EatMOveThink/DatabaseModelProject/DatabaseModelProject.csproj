@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AchievmentPoints.cs" />
+    <Compile Include="AddtionalProgram.cs" />
     <Compile Include="DailyTaskPoint.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Program.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="SubscriberViews.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserDailyTask.cs" />
+    <Compile Include="UserRequest.cs" />
     <Compile Include="UserTasks.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace DAOLayer
                         ImageURL = p.ImageURL,
                         Intensity = p.Intensity,
                         isSubscribed = p.SubscribePrograms.Where(sp => sp.UserID == uid && sp.ProgramID == p.ProgramID).Count() > 0,
-                        Points = p.Points,
+                        Points = p.TotalPoints,
                         ProgramID = p.ProgramID,
                         Text = p.Text,
                         Title = p.Title
@@ -44,7 +45,7 @@ namespace DAOLayer
             }
         }
 
-        public bool saveProgram(List<DatabaseModelProject.ProgramTask> tasks, DatabaseModelProject.Program program)
+        public bool saveProgram(List<DatabaseModelProject.ProgramTask> tasks, DatabaseModelProject.Program program, List<AddtionalProgram> programIds)
         {
             using (var db = new DatabaseModelProject.Model())
             {
@@ -52,11 +53,15 @@ namespace DAOLayer
                 {
                     try
                     {
-                        program.Points = tasks.Sum(p => p.Points);
+                        program.TotalPoints = program.Points + tasks.Sum(p => p.Points);
                         db.Programs.Add(program);
                         db.SaveChanges();
                         tasks.ForEach(t => t.ProgramID = program.ProgramID);
+                        tasks.ForEach(t => t.Text = (t.Text == null ? "" : t.Text));
+                        programIds.ForEach(p => p.ProgramId = program.ProgramID);
                         db.ProgramTasks.AddRange(tasks);
+                        db.SaveChanges();
+                        db.AddtionalPrograms.AddRange(programIds);
                         db.SaveChanges();
                         dbTrans.Commit();
                         return true;
@@ -92,12 +97,33 @@ namespace DAOLayer
                     db.SubscribePrograms.Add(sub);
                     db.SaveChanges();
                     db.Entry(sub).Reload();
-                    return true;
                 }
                 catch (Exception e)
                 {
                     return false;
                 }
+                    var related = db.AddtionalPrograms.Where(p => p.ProgramId == sub.ProgramID).ToList();
+                    foreach(var ss in related)
+                    {
+                        SubscribeProgram pp = new SubscribeProgram
+                        {
+                            UserID = sub.UserID,
+                            ProgramID = ss.ReferencedProgram,
+                            onSubscribe = sub.onSubscribe
+                        };
+                        try
+                        {
+                            db.SubscribePrograms.Add(pp);
+                            db.SaveChanges();
+                            db.Entry(pp).Reload();
+                        }
+                        catch(Exception e)
+                        {
+
+                        }
+                    }
+                return true;
+                
             }
         }
 
@@ -166,9 +192,23 @@ namespace DAOLayer
                 string dailyQ = String.Format("SELECT * FROM dbo.UserDailyTasks t , dbo.DailyTaskPoints p where t.TaskID = p.TaskID and Day >= '{0}' and Day <= '{1}' and UserID = {2}  and Finish = 1;", fday, lday, uid);
                 model.gain_dailyPts = db.Database.SqlQuery<DailyTaskPoint>(dailyQ).Sum(p => p.Points);
 
-                model.programPts = db.SubscribePrograms.Where(P => P.UserID == uid).Sum(p => p.Program.Points);
+                var prgs = db.SubscribePrograms.Where(P => P.UserID == uid).ToList();
+                if(prgs.Count > 0)
+                    model.programPts = prgs.Sum(p => p.Program.TotalPoints);
+                else
+                    model.programPts = 0;
                 string subQ = String.Format("select * from dbo.ProgramTasks pt, dbo.SubscribeProgram sp, dbo .SubscribeProgramTask spt where spt.SubscribeProgramID = sp.SubscribeProgramID and spt.ProgramTaskID = pt.ProgramTaskID and UserID = {0};", uid);
                 model.gain_programPts = db.Database.SqlQuery<ProgramTask>(subQ).Sum(p => p.Points);
+                
+                List<Program> listCompletedPrograms = new List<Program>();
+                var subscribedProgamsList = db.SubscribePrograms.Where(sp => sp.UserID == uid);
+                foreach (var subscribedProgam in subscribedProgamsList)
+                {
+                    var subPTasks = db.ProgramTasks.Where(pt => pt.ProgramID == subscribedProgam.ProgramID).Count();
+                    var subPTasksCompleted = db.SubscribeProgramTasks.Where(spt => spt.SubscribeProgramID == subscribedProgam.SubscribeProgramID).Count();
+                    if (subPTasks == subPTasksCompleted)
+                        model.gain_programPts += subscribedProgam.Program.Points;
+                }
 
                 model.totalPts = model.programPts + model.dailyPts;
                 model.gain_totalPts = model.gain_programPts + model.gain_dailyPts;
@@ -176,6 +216,50 @@ namespace DAOLayer
                 model.totalPts_30 = (int)Math.Round(model.totalPts * 0.3);
                 model.totalPts_60 = (int)Math.Round(model.totalPts * 0.65);
                 return model;
+            }
+        }
+
+        public Program removeProgram(int id)
+        {
+            using (var db = new DatabaseModelProject.Model())
+            {
+                using(var trans = db.Database.BeginTransaction())
+                {
+                    try{                        
+                        Program p = new Program
+                        {
+                            ProgramID = id
+                        };
+                        db.Programs.Attach(p);
+                        var sp = db.SubscribePrograms.Where(s => s.ProgramID == id);
+                        foreach(var spi in sp )
+                        {
+                            var sptz = db.SubscribeProgramTasks.Where(s => s.SubscribeProgramID == spi.SubscribeProgramID);
+                            db.SubscribeProgramTasks.RemoveRange(sptz);
+                            db.SaveChanges();
+                        }
+                        db.SubscribePrograms.RemoveRange(sp);
+                        db.SaveChanges();
+                        db.Programs.Remove(p);
+
+                        db.SaveChanges();
+                        trans.Commit();
+                        return p;
+                    }
+                    catch(Exception e)
+                    {
+                        trans.Rollback();
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public List<Program> getAllPrograms()
+        {
+            using(var db = new Model())
+            {
+                return db.Programs.ToList();
             }
         }
     }

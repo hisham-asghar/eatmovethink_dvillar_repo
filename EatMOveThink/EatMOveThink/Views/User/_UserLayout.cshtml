@@ -1,0 +1,74 @@
+﻿﻿@{
+    Layout = "";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="/css/styleMain.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style>
+        .mylogin {
+            box-sizing: border-box;
+            padding: 40px;
+            width: 300px;
+            height: 400px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            background-color: #fff;
+        }
+
+        .mylogo {
+            position: fixed;
+            bottom: 8%;
+            left: 15%;
+            transform: translate(-50%, -60%);
+            background-color: #fff;
+        }
+
+        .mycircle {
+            border-radius: 50%;
+            width: 150px;
+            position: fixed;
+            bottom: 0;
+            right: 3%;
+            transform: translate(-50%, -60%);
+            background-color: #70af82;
+            text-align: center;
+            height: 150px;
+            color: #fff;
+            padding: 25px;
+        }
+
+            .mycircle > * {
+                font-weight: bold;
+            }
+    </style>
+</head>
+<body style="background: url(/img/loginback.jpg);background-size: cover;
+    	background-repeat: no-repeat;
+    	min-height: 100vh;">
+    @RenderBody()
+
+    <img class="mylogo visible-lg visible-md visible-sm" src="/img/logo.png" style="width:230px;border-radius:2px;" alt="">
+    <div class="mycircle visible-lg visible-md visible-sm">
+        <h4>EAT</h4>
+        <h4>MOVE</h4>
+        <h4>THINK</h4>
+    </div>
+
+    <script src="/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        //alert(window.screen.height + "");
+        var img = document.getElementById("mobile_back");
+        $("#mobile_back").height(window.screen.height);
+    </script>
+    @RenderSection("scripts", false)
+
+</body>
+</html>

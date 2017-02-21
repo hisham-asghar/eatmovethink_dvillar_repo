@@ -20,7 +20,5 @@ namespace DatabaseModelProject
         public bool Finish { get; set; }
 
         public virtual DailyTaskPoint DailyTaskPoint { get; set; }
-
-        public virtual User User { get; set; }
     }
 }

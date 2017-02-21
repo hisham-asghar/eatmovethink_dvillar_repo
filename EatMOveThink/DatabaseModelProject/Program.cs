@@ -28,10 +28,12 @@ namespace DatabaseModelProject
 
         public int Points { get; set; }
 
-        [StringLength(50)]
+        public int TotalPoints { get; set; }
+
+        [StringLength(350)]
         public string ImageURL { get; set; }
 
-        [StringLength(50)]
+        [StringLength(350)]
         public string pdf { get; set; }
 
         public virtual ICollection<SubscribeProgram> SubscribePrograms { get; set; }

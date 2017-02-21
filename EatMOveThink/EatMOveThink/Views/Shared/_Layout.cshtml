@@ -59,10 +59,33 @@
             <div>   
                 <div>
                     <ul id="menu">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li class=@(ViewBag.PageName == "/" ? "active" : "")><a href="/">Home</a></li>
+                        <li class=@(ViewBag.PageName == "Eat" ? "active" : "")><a href="/Home/Eat">Eat</a></li>
+                        <li class=@(ViewBag.PageName == "Move" ? "active" : "")><a href="/Home/Move">Move</a></li>
+                        <li class=@(ViewBag.PageName == "Think" ? "active" : "")><a href="/Home/Think">Think</a></li>
+                        <li class=@(ViewBag.PageName == "WhatsNew" ? "active" : "")><a href="/Home/WhatsNew">What's New</a></li>
+                        @if (!(ViewBag.signed == null || ViewBag.signed == false))
+                        {
+                            <li class=@(ViewBag.PageName == "Goals" ? "active" : "")><a href="/Home/Goals">Daily Goals</a></li>
+                        }
+                        <li class=@(ViewBag.PageName == "Challenges" ? "active" : "")><a href="/Home/Challenges">CHALLENGES</a></li>
+                        @if ((ViewBag.signed == null || ViewBag.signed == false))
+                        {
+                            <li><a href="/User/Login">Login</a></li>
+                        }
+                        else
+                        {
+                            <li class=""><a href="/My/Achievements">My Achievements</a></li>
+                            if(Session["admin"] != null)
+                            {
+                                <li><a href="/My/UsersRequest">Users Requests</a></li>
+                            }
+                            <li><a href="/My/Day">EAT MOVE THINK goals</a></li>
+                            <li><a href="/My/Challenges">My programs</a></li>
+                            <li><a href="/My/BookAnExpert">Book an Expert</a></li>
+                            <li style="border-top:1px solid #000"><a href="/User/ChangePassword">Update Password</a></li>
+                            <li ><a href="/User/Logout">Sign Out</a></li>
+                        }
                     </ul>
                 </div>
             </div>

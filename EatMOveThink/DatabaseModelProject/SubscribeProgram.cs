@@ -27,8 +27,6 @@ namespace DatabaseModelProject
 
         public virtual Program Program { get; set; }
 
-        public virtual User User { get; set; }
-
         public virtual ICollection<SubscribeProgramTask> SubscribeProgramTasks { get; set; }
     }
 }

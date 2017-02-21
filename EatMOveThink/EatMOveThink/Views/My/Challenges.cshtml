@@ -38,7 +38,7 @@
                         </a>
                         <div class="caption" style="padding-bottom:12px;">
                             <h2>@p.Title</h2>
-                            <p style="max-height:10ch;overflow:hidden;">@p.Text</p>
+                            <p style="max-height:10ch;overflow:hidden;">@Html.Raw(p.Text)</p>
                             <div style="margin-top:2%;">
                                 <span class="pull-right" style="zoom:75%;">
                                     <a class="btn btn-default btn-sm" href="/Home/Challenges?pid=@p.ProgramID">
